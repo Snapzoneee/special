@@ -1,0 +1,2242 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="theme-color" content="#0B1020" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta
+      property="og:title"
+      content="Untuk Seseorang yang Sangat Berarti ❤️"
+    />
+    <meta
+      property="og:description"
+      content="Sebuah hadiah digital yang dibuat khusus untukmu."
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      name="apple-touch-icon"
+      content="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❤️</text></svg>"
+    />
+    <title>Untuk Seseorang yang Sangat Berarti ❤️</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <style>
+      :root {
+        --bg-deep: #0b1020;
+        --bg-dark: #111827;
+        --bg-mid: #1e293b;
+        --pink: #ff4d8d;
+        --pink-light: #ff77b7;
+        --pink-pale: #ffd6e7;
+        --white: #ffffff;
+        --safe-top: env(safe-area-inset-top, 0px);
+        --safe-bottom: env(safe-area-inset-bottom, 0px);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        -webkit-text-size-adjust: 100%;
+        overflow-x: hidden;
+      }
+
+      body {
+        background: var(--bg-deep);
+        color: var(--white);
+        font-family: "Inter", sans-serif;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+        padding-top: var(--safe-top);
+        padding-bottom: var(--safe-bottom);
+      }
+
+      /* ===== CANVAS STARS ===== */
+      #starCanvas {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+      }
+
+      /* ===== MUSIC PLAYER ===== */
+      #musicBar {
+        position: fixed;
+        top: calc(var(--safe-top) + 12px);
+        right: 12px;
+        left: auto;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(255, 77, 141, 0.12);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 77, 141, 0.25);
+        border-radius: 100px;
+        padding: 8px 16px 8px 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        opacity: 0;
+        max-width: calc(100vw - 24px);
+        box-sizing: border-box;
+      }
+      #musicBar:hover {
+        background: rgba(255, 77, 141, 0.22);
+        transform: scale(1.03);
+      }
+      #musicBar .note {
+        font-size: 16px;
+        animation: pulse 2s infinite;
+      }
+      #musicBar .lbl {
+        font-size: 12px;
+        color: var(--pink-pale);
+        font-weight: 500;
+        letter-spacing: 0.5px;
+      }
+      #musicBar .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--pink);
+        opacity: 0.5;
+        transition: all 0.3s;
+      }
+      #musicBar.playing .dot {
+        opacity: 1;
+        animation: blink 1s infinite;
+      }
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.3;
+        }
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.2);
+        }
+      }
+
+      /* ===== SECTION BASE ===== */
+      .section {
+        position: relative;
+        z-index: 1;
+        min-height: 100svh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 20px;
+      }
+
+      /* ===== INTRO ===== */
+      #intro {
+        text-align: center;
+        min-height: 100svh;
+        padding-top: calc(var(--safe-top) + 60px);
+      }
+      .intro-sub {
+        font-family: "Inter", sans-serif;
+        font-size: clamp(11px, 3vw, 13px);
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: var(--pink-light);
+        opacity: 0;
+        margin-bottom: 20px;
+      }
+      .intro-name {
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(52px, 14vw, 110px);
+        font-weight: 300;
+        font-style: italic;
+        line-height: 1.05;
+        color: var(--white);
+        opacity: 0;
+        text-shadow: 0 0 80px rgba(255, 77, 141, 0.4);
+      }
+      .intro-tagline {
+        font-family: "Inter", sans-serif;
+        font-size: clamp(13px, 3.5vw, 16px);
+        color: rgba(255, 214, 231, 0.6);
+        font-weight: 300;
+        letter-spacing: 1px;
+        opacity: 0;
+        margin-top: 16px;
+      }
+      .intro-btn {
+        margin-top: 48px;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 36px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 77, 141, 0.2),
+          rgba(255, 119, 183, 0.15)
+        );
+        border: 1px solid rgba(255, 77, 141, 0.4);
+        border-radius: 100px;
+        font-family: "Inter", sans-serif;
+        font-size: 15px;
+        font-weight: 400;
+        color: var(--pink-pale);
+        cursor: pointer;
+        opacity: 0;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        letter-spacing: 0.5px;
+      }
+      .intro-btn:hover {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 77, 141, 0.35),
+          rgba(255, 119, 183, 0.28)
+        );
+        border-color: rgba(255, 77, 141, 0.7);
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 20px 50px rgba(255, 77, 141, 0.3);
+      }
+      .intro-btn:active {
+        transform: scale(0.98);
+      }
+      .intro-glow {
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 77, 141, 0.12) 0%,
+          transparent 70%
+        );
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        animation: breathe 4s ease-in-out infinite;
+      }
+      @keyframes breathe {
+        0%,
+        100% {
+          opacity: 0.6;
+          transform: translate(-50%, -50%) scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1.15);
+        }
+      }
+
+      /* ===== ENVELOPE ===== */
+      #envelopeSection {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 500;
+        background: rgba(11, 16, 32, 0.95);
+        backdrop-filter: blur(30px);
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+      .env-wrap {
+        position: relative;
+        width: min(320px, 85vw);
+      }
+      .envelope {
+        width: 100%;
+        aspect-ratio: 1.6/1;
+        position: relative;
+        filter: drop-shadow(0 30px 80px rgba(255, 77, 141, 0.4));
+      }
+      .env-body {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(145deg, #1e2b45, #162035);
+        border-radius: 12px;
+        position: absolute;
+        border: 1px solid rgba(255, 77, 141, 0.3);
+        overflow: hidden;
+      }
+      .env-body::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 77, 141, 0.05) 0%,
+          transparent 60%
+        );
+      }
+      .env-bottom-left {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 0 calc(var(--eh) * 0.55) calc(var(--ew) * 0.5);
+        border-color: transparent transparent #111827 transparent;
+        --ew: min(320px, 85vw);
+        --eh: calc(var(--ew) / 1.6);
+      }
+      .env-bottom-right {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 0 calc(var(--eh) * 0.55) calc(var(--ew) * 0.5);
+        border-color: transparent transparent #111827 transparent;
+        transform: scaleX(-1);
+        --ew: min(320px, 85vw);
+        --eh: calc(var(--ew) / 1.6);
+      }
+      .env-top {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 55%;
+        background: linear-gradient(145deg, #243050, #1a2540);
+        transform-origin: top center;
+        clip-path: polygon(0 0, 100% 0, 50% 100%);
+        border-radius: 12px 12px 0 0;
+        transform-style: preserve-3d;
+        transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+        border-bottom: 1px solid rgba(255, 77, 141, 0.2);
+      }
+      .env-top.open {
+        transform: rotateX(-180deg);
+      }
+      .env-seal {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 36px;
+        height: 36px;
+        background: radial-gradient(circle, #ff4d8d, #c0184f);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        box-shadow: 0 0 20px rgba(255, 77, 141, 0.6);
+        z-index: 2;
+        transition: opacity 0.5s;
+      }
+      .letter-preview {
+        position: absolute;
+        bottom: 10%;
+        left: 50%;
+        transform: translateX(-50%) translateY(100%);
+        width: 80%;
+        background: linear-gradient(145deg, #fdf6f0, #fef3ea);
+        border-radius: 4px;
+        height: 65%;
+        opacity: 0;
+        transition: all 1.2s cubic-bezier(0.23, 1, 0.32, 1) 0.5s;
+        box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.3);
+      }
+      .letter-preview.show {
+        transform: translateX(-50%) translateY(-5%);
+        opacity: 1;
+      }
+      .env-msg {
+        margin-top: 32px;
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(18px, 5vw, 22px);
+        font-style: italic;
+        color: var(--pink-pale);
+        text-align: center;
+        opacity: 0;
+        animation: fadeUp 1s ease 1.5s forwards;
+      }
+      @keyframes fadeUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+      }
+
+      /* ===== SCROLL INDICATOR ===== */
+      .scroll-hint {
+        position: absolute;
+        bottom: calc(var(--safe-bottom) + 28px);
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        opacity: 0.5;
+        animation: bob 2.5s ease-in-out infinite;
+      }
+      .scroll-hint span {
+        font-size: 10px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--pink-light);
+      }
+      .scroll-hint svg {
+        width: 20px;
+      }
+      @keyframes bob {
+        0%,
+        100% {
+          transform: translateX(-50%) translateY(0);
+        }
+        50% {
+          transform: translateX(-50%) translateY(6px);
+        }
+      }
+
+      /* ===== SECTION TITLES ===== */
+      .sec-eyebrow {
+        font-size: 11px;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: var(--pink);
+        margin-bottom: 14px;
+        opacity: 0.8;
+      }
+      .sec-title {
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(36px, 9vw, 70px);
+        font-weight: 300;
+        line-height: 1.1;
+        text-align: center;
+      }
+      .sec-title em {
+        font-style: italic;
+        color: var(--pink-light);
+      }
+
+      /* ===== LOVE LETTER ===== */
+      #letterSection {
+        background: transparent;
+      }
+      .letter-paper {
+        background: linear-gradient(145deg, #fdf8f2, #fef5ea);
+        color: #2d1a0e;
+        border-radius: 16px;
+        padding: clamp(28px, 7vw, 56px);
+        max-width: 640px;
+        width: 100%;
+        box-shadow:
+          0 40px 120px rgba(0, 0, 0, 0.5),
+          0 0 0 1px rgba(255, 255, 255, 0.05);
+        position: relative;
+        transform: rotate(-0.5deg);
+        will-change: transform;
+      }
+      .letter-paper::before {
+        content: "";
+        position: absolute;
+        left: 60px;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+        background: rgba(255, 150, 180, 0.3);
+      }
+      .letter-paper .letter-date {
+        font-family: "Inter", sans-serif;
+        font-size: 12px;
+        color: rgba(45, 26, 14, 0.5);
+        margin-bottom: 24px;
+        letter-spacing: 0.5px;
+      }
+      .letter-paper .letter-opening {
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(20px, 5vw, 26px);
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: #1a0a05;
+      }
+      .letter-body {
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(16px, 4.5vw, 20px);
+        line-height: 1.85;
+        color: #3d2010;
+        font-weight: 400;
+      }
+      .letter-signature {
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(20px, 5vw, 26px);
+        font-style: italic;
+        margin-top: 28px;
+        color: #c0184f;
+      }
+      #typedText::after {
+        content: "|";
+        animation: cursor 0.7s step-end infinite;
+        color: #c0184f;
+      }
+      @keyframes cursor {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+
+      /* ===== PHOTO MEMORIES ===== */
+      #photosSection {
+        padding: 80px 20px;
+      }
+      .photos-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        max-width: 700px;
+        width: 100%;
+        margin-top: 48px;
+      }
+      @media (min-width: 600px) {
+        .photos-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+      .polaroid {
+        background: #f8f4ee;
+        padding: 10px 10px 30px;
+        border-radius: 4px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        transform: rotate(var(--rot));
+        opacity: 0;
+        will-change: transform;
+      }
+      .polaroid:hover {
+        transform: rotate(0deg) scale(1.05) translateY(-8px);
+        box-shadow: 0 24px 60px rgba(255, 77, 141, 0.3);
+        z-index: 2;
+      }
+      .polaroid-img {
+        width: 100%;
+        aspect-ratio: 1;
+        background: var(--ph-bg, #1e293b);
+        border-radius: 2px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        overflow: hidden;
+      }
+      .polaroid-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .polaroid-cap {
+        text-align: center;
+        font-family: "Cormorant Garamond", serif;
+        font-size: 13px;
+        color: #5a3a2a;
+        margin-top: 8px;
+        font-style: italic;
+      }
+
+      /* ===== LIGHTBOX ===== */
+      #lightbox {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 900;
+        background: rgba(0, 0, 0, 0.92);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        align-items: center;
+        justify-content: center;
+      }
+      #lightbox.open {
+        display: flex;
+      }
+      #lightbox img,
+      #lightbox .lb-emoji {
+        max-width: min(90vw, 600px);
+        max-height: 80svh;
+        border-radius: 12px;
+        object-fit: contain;
+        box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7);
+      }
+      #lightbox .lb-emoji {
+        font-size: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      #lightbox .lb-close {
+        position: absolute;
+        top: calc(var(--safe-top) + 20px);
+        right: 20px;
+        width: 44px;
+        height: 44px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      #lightbox .lb-cap {
+        position: absolute;
+        bottom: calc(var(--safe-bottom) + 30px);
+        font-family: "Cormorant Garamond", serif;
+        font-size: 18px;
+        font-style: italic;
+        color: var(--pink-pale);
+      }
+
+      /* ===== TIMELINE ===== */
+      #timelineSection {
+        padding: 80px 20px;
+      }
+      .timeline {
+        max-width: 560px;
+        width: 100%;
+        margin-top: 56px;
+        position: relative;
+      }
+      .timeline::before {
+        content: "";
+        position: absolute;
+        left: 20px;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          var(--pink) 20%,
+          var(--pink) 80%,
+          transparent
+        );
+        opacity: 0.4;
+      }
+      .tl-item {
+        display: flex;
+        gap: 28px;
+        margin-bottom: 44px;
+        align-items: flex-start;
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      .tl-dot {
+        width: 40px;
+        height: 40px;
+        flex-shrink: 0;
+        background: radial-gradient(
+          circle,
+          rgba(255, 77, 141, 0.3),
+          rgba(255, 77, 141, 0.1)
+        );
+        border: 1px solid rgba(255, 77, 141, 0.5);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 17px;
+        position: relative;
+        z-index: 1;
+      }
+      .tl-content {
+      }
+      .tl-date {
+        font-size: 11px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--pink);
+        margin-bottom: 4px;
+      }
+      .tl-title {
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(18px, 5vw, 24px);
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+      .tl-desc {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.55);
+        line-height: 1.65;
+      }
+
+      /* ===== DAYS COUNTER ===== */
+      #counterSection {
+        text-align: center;
+        padding: 80px 20px;
+      }
+      .counter-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        max-width: 480px;
+        width: 100%;
+        margin-top: 48px;
+      }
+      @media (min-width: 500px) {
+        .counter-grid {
+          grid-template-columns: repeat(4, 1fr);
+          gap: 16px;
+        }
+      }
+      .counter-card {
+        background: rgba(255, 77, 141, 0.07);
+        border: 1px solid rgba(255, 77, 141, 0.2);
+        border-radius: 20px;
+        padding: 20px 12px;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        position: relative;
+        overflow: hidden;
+      }
+      .counter-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 77, 141, 0.05),
+          transparent
+        );
+      }
+      .counter-num {
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(38px, 11vw, 64px);
+        font-weight: 300;
+        color: var(--white);
+        line-height: 1;
+        display: block;
+        text-shadow: 0 0 30px rgba(255, 77, 141, 0.5);
+      }
+      .counter-label {
+        display: block;
+        font-size: 10px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--pink-light);
+        margin-top: 6px;
+        opacity: 0.8;
+      }
+
+      /* ===== REASONS ===== */
+      #reasonsSection {
+        text-align: center;
+        padding: 80px 20px;
+      }
+      .reason-card {
+        max-width: 540px;
+        width: 100%;
+        background: rgba(255, 77, 141, 0.06);
+        border: 1px solid rgba(255, 77, 141, 0.2);
+        border-radius: 24px;
+        padding: clamp(32px, 8vw, 56px);
+        margin-top: 48px;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        min-height: 180px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+      }
+      .reason-num {
+        font-size: 11px;
+        letter-spacing: 3px;
+        color: var(--pink);
+        text-transform: uppercase;
+      }
+      .reason-text {
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(22px, 6vw, 34px);
+        font-style: italic;
+        line-height: 1.4;
+        color: var(--white);
+        transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+      .reason-btn {
+        margin-top: 24px;
+        padding: 14px 32px;
+        background: linear-gradient(135deg, #ff4d8d, #ff77b7);
+        border: none;
+        border-radius: 100px;
+        color: var(--white);
+        font-size: 15px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-family: "Inter", sans-serif;
+        box-shadow: 0 8px 30px rgba(255, 77, 141, 0.4);
+      }
+      .reason-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 16px 40px rgba(255, 77, 141, 0.5);
+      }
+      .reason-btn:active {
+        transform: scale(0.97);
+      }
+
+      /* ===== MEMORY BOOK ===== */
+      #bookSection {
+        padding: 80px 20px;
+      }
+      .book-wrap {
+        perspective: 1200px;
+        width: min(360px, 90vw);
+        aspect-ratio: 0.75;
+        margin-top: 48px;
+        cursor: pointer;
+        position: relative;
+      }
+      .book {
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 1s cubic-bezier(0.23, 1, 0.32, 1);
+        position: relative;
+      }
+      .book-cover,
+      .book-back {
+        position: absolute;
+        inset: 0;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        border-radius: 6px 16px 16px 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 12px;
+        padding: 32px;
+        text-align: center;
+      }
+      .book-cover {
+        background: linear-gradient(145deg, #1e2b45, #111827);
+        border: 1px solid rgba(255, 77, 141, 0.3);
+        box-shadow:
+          inset -4px 0 20px rgba(0, 0, 0, 0.5),
+          0 30px 80px rgba(0, 0, 0, 0.5);
+      }
+      .book-back {
+        background: linear-gradient(145deg, #fdf8f2, #fef5ea);
+        transform: rotateY(180deg);
+      }
+      .book-title {
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(24px, 7vw, 36px);
+        font-style: italic;
+        color: var(--pink-pale);
+      }
+      .book-subtitle {
+        font-size: 12px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: rgba(255, 214, 231, 0.5);
+      }
+      .book-heart {
+        font-size: 48px;
+      }
+      .book.open {
+        transform: rotateY(180deg);
+      }
+      .book-back-content {
+        color: #3d2010;
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(15px, 4vw, 19px);
+        line-height: 1.8;
+        font-style: italic;
+      }
+      .book-hint {
+        margin-top: 16px;
+        font-size: 12px;
+        color: rgba(255, 214, 231, 0.5);
+        letter-spacing: 1px;
+      }
+
+      /* ===== FULL MUSIC PLAYER ===== */
+      #playerSection {
+        text-align: center;
+        padding: 80px 20px;
+      }
+      .player-card {
+        max-width: 360px;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 77, 141, 0.2);
+        border-radius: 28px;
+        padding: 36px 28px;
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+        margin-top: 48px;
+      }
+      .player-art {
+        width: 120px;
+        height: 120px;
+        background: radial-gradient(
+          circle at 30% 30%,
+          rgba(255, 119, 183, 0.3),
+          rgba(11, 16, 32, 0.9)
+        );
+        border-radius: 50%;
+        margin: 0 auto 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 48px;
+        box-shadow: 0 0 40px rgba(255, 77, 141, 0.3);
+        transition: all 0.5s;
+      }
+      .player-art.spinning {
+        animation: spin 8s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .player-song {
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(18px, 5vw, 22px);
+        margin-bottom: 6px;
+      }
+      .player-artist {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.4);
+        margin-bottom: 28px;
+      }
+      .player-controls {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+      }
+      .player-btn {
+        width: 52px;
+        height: 52px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 77, 141, 0.2),
+          rgba(255, 119, 183, 0.15)
+        );
+        border: 1px solid rgba(255, 77, 141, 0.35);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 20px;
+        transition: all 0.3s ease;
+        color: var(--white);
+      }
+      .player-btn:hover {
+        background: rgba(255, 77, 141, 0.35);
+        transform: scale(1.05);
+      }
+      .player-btn.main {
+        width: 64px;
+        height: 64px;
+        font-size: 24px;
+        background: linear-gradient(135deg, #ff4d8d, #ff77b7);
+        border: none;
+        box-shadow: 0 8px 30px rgba(255, 77, 141, 0.5);
+      }
+      .player-vol {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 24px;
+        padding: 0 8px;
+      }
+      .player-vol span {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.4);
+      }
+      .vol-slider {
+        flex: 1;
+        -webkit-appearance: none;
+        height: 3px;
+        background: linear-gradient(
+          to right,
+          var(--pink) 0%,
+          rgba(255, 255, 255, 0.15) 0%
+        );
+        border-radius: 2px;
+        outline: none;
+      }
+      .vol-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: var(--pink);
+        box-shadow: 0 0 8px rgba(255, 77, 141, 0.5);
+        cursor: pointer;
+      }
+
+      /* ===== SECRET MESSAGE ===== */
+      #secretSection {
+        text-align: center;
+        padding: 80px 20px;
+      }
+      .secret-btn {
+        margin-top: 48px;
+        padding: 18px 44px;
+        background: transparent;
+        border: 1px solid rgba(255, 77, 141, 0.4);
+        border-radius: 100px;
+        color: var(--pink-pale);
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(17px, 5vw, 22px);
+        font-style: italic;
+        cursor: pointer;
+        transition: all 0.4s ease;
+        letter-spacing: 0.5px;
+      }
+      .secret-btn:hover {
+        background: rgba(255, 77, 141, 0.1);
+        border-color: rgba(255, 77, 141, 0.7);
+        box-shadow: 0 0 40px rgba(255, 77, 141, 0.2);
+      }
+      #secretModal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 800;
+        background: rgba(11, 16, 32, 0.88);
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+      #secretModal.open {
+        display: flex;
+      }
+      .modal-box {
+        max-width: 540px;
+        width: 100%;
+        background: linear-gradient(
+          145deg,
+          rgba(30, 41, 59, 0.95),
+          rgba(17, 24, 39, 0.95)
+        );
+        border: 1px solid rgba(255, 77, 141, 0.3);
+        border-radius: 28px;
+        padding: clamp(32px, 8vw, 56px);
+        text-align: center;
+        box-shadow:
+          0 40px 120px rgba(0, 0, 0, 0.6),
+          0 0 80px rgba(255, 77, 141, 0.1);
+        animation: modalIn 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+      @keyframes modalIn {
+        from {
+          opacity: 0;
+          transform: scale(0.85) translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      .modal-icon {
+        font-size: 56px;
+        margin-bottom: 20px;
+        display: block;
+      }
+      .modal-title {
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(26px, 7vw, 38px);
+        font-weight: 300;
+        font-style: italic;
+        margin-bottom: 20px;
+        color: var(--pink-pale);
+      }
+      .modal-text {
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(17px, 4.5vw, 22px);
+        line-height: 1.8;
+        color: rgba(255, 255, 255, 0.8);
+        font-style: italic;
+      }
+      .modal-close {
+        margin-top: 32px;
+        padding: 12px 32px;
+        background: rgba(255, 77, 141, 0.15);
+        border: 1px solid rgba(255, 77, 141, 0.3);
+        border-radius: 100px;
+        color: var(--pink-pale);
+        cursor: pointer;
+        font-size: 14px;
+        font-family: "Inter", sans-serif;
+        transition: all 0.3s;
+      }
+      .modal-close:hover {
+        background: rgba(255, 77, 141, 0.25);
+      }
+
+      /* ===== FINAL ===== */
+      #finalSection {
+        text-align: center;
+        padding: 100px 20px;
+        overflow: hidden;
+      }
+      .final-title {
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(28px, 8vw, 64px);
+        font-weight: 300;
+        line-height: 1.15;
+        opacity: 0;
+      }
+      .final-title em {
+        font-style: italic;
+        color: var(--pink-light);
+      }
+      .final-sub {
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(18px, 5vw, 28px);
+        font-style: italic;
+        color: rgba(255, 214, 231, 0.7);
+        margin-top: 20px;
+        opacity: 0;
+      }
+      .hearts-field {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+      }
+      .float-heart {
+        position: absolute;
+        font-size: clamp(16px, 5vw, 28px);
+        animation: floatUp var(--dur, 6s) ease-in-out var(--delay, 0s) infinite;
+        opacity: 0;
+        bottom: -40px;
+      }
+      @keyframes floatUp {
+        0% {
+          opacity: 0;
+          transform: translateY(0) scale(0.8) rotate(var(--rot, 0deg));
+        }
+        15% {
+          opacity: 0.8;
+        }
+        85% {
+          opacity: 0.5;
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-110vh) scale(1.2)
+            rotate(calc(var(--rot, 0deg) + 30deg));
+        }
+      }
+
+      /* ===== GRAND FINALE ===== */
+      #grandfinalSection {
+        text-align: center;
+        padding: 100px 20px;
+        min-height: 100svh;
+        position: relative;
+        overflow: hidden;
+      }
+      #confettiCanvas {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+      }
+      .finale-content {
+        position: relative;
+        z-index: 1;
+      }
+      .finale-main {
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(36px, 10vw, 80px);
+        font-weight: 300;
+        font-style: italic;
+        line-height: 1.1;
+        color: var(--white);
+        text-shadow: 0 0 80px rgba(255, 77, 141, 0.5);
+        opacity: 0;
+      }
+      .finale-main em {
+        color: var(--pink-light);
+      }
+      .finale-sub {
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(18px, 5vw, 28px);
+        color: var(--pink-pale);
+        margin-top: 24px;
+        font-style: italic;
+        opacity: 0;
+      }
+      .finale-from {
+        margin-top: 56px;
+        font-family: "Inter", sans-serif;
+        font-size: 13px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.3);
+        opacity: 0;
+      }
+
+      /* ===== REVEAL ANIMATIONS ===== */
+      .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      .reveal.visible {
+        animation: revealAnim 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+      }
+      @keyframes revealAnim {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ===== DIVIDER ===== */
+      .sec-divider {
+        width: 60px;
+        height: 1px;
+        background: linear-gradient(
+          to right,
+          transparent,
+          var(--pink),
+          transparent
+        );
+        margin: 24px auto 0;
+      }
+
+      /* ===== DESKTOP ===== */
+      @media (min-width: 768px) {
+        .photos-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .counter-grid {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+      @media (min-width: 1024px) {
+        .photos-grid {
+          grid-template-columns: repeat(4, 1fr);
+        }
+        .book-wrap {
+          width: 400px;
+        }
+      }
+
+      /* Perf: reduce motion */
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="starCanvas"></canvas>
+
+    <!-- MUSIC BAR -->
+    <div id="musicBar" onclick="toggleMusic()">
+      <span class="note">♪</span>
+      <span class="lbl">Putar Musik</span>
+      <div class="dot"></div>
+    </div>
+
+    <!-- SECTION 1: INTRO -->
+    <section id="intro" class="section">
+      <div class="intro-glow"></div>
+      <p class="intro-sub" id="introSub">Sebuah Hadiah Dari Hati Rizzz</p>
+      <h1 class="intro-name" id="introName"></h1>
+      <p class="intro-tagline" id="introTagline">
+        Seseorang yang selalu ada di hatiku
+      </p>
+      <button class="intro-btn" id="introBtn" onclick="startJourney()">
+        <span>Buka Cerita Kita</span>
+        <span>✦</span>
+      </button>
+      <div class="scroll-hint" id="scrollHint">
+        <span>Gulir</span>
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="rgba(255,119,183,0.5)"
+          stroke-width="1.5"
+        >
+          <path d="M12 5v14M5 12l7 7 7-7" />
+        </svg>
+      </div>
+    </section>
+
+    <!-- ENVELOPE OVERLAY -->
+    <div id="envelopeSection">
+      <div class="env-wrap">
+        <div class="envelope">
+          <div class="env-body"></div>
+          <div class="env-bottom-left"></div>
+          <div class="env-bottom-right"></div>
+          <div class="env-top" id="envTop">
+            <div class="env-seal">❤️</div>
+          </div>
+          <div class="letter-preview" id="letterPreview"></div>
+        </div>
+      </div>
+      <p class="env-msg" id="envMsg">Satu surat untukmu...</p>
+    </div>
+
+    <!-- SECTION 3: LOVE LETTER -->
+    <section id="letterSection" class="section">
+      <div class="letter-paper reveal">
+        <p class="letter-date" id="letterDate"></p>
+        <p class="letter-opening" id="letterOpening"></p>
+        <div class="letter-body">
+          <p id="typedText"></p>
+        </div>
+        <p class="letter-signature" id="letterSignature"></p>
+      </div>
+    </section>
+
+    <!-- SECTION 4: PHOTO MEMORIES -->
+    <section id="photosSection" class="section">
+      <p class="sec-eyebrow reveal">Galeri Cimup</p>
+      <h2 class="sec-title reveal">
+        <em>Picture Yang</em><br />Tak Terlupakan
+      </h2>
+      <div class="sec-divider reveal"></div>
+      <div class="photos-grid" id="photosGrid"></div>
+    </section>
+
+    <!-- LIGHTBOX -->
+    <div id="lightbox">
+      <div class="lb-close" onclick="closeLightbox()">✕</div>
+      <div id="lbContent"></div>
+      <p class="lb-cap" id="lbCap"></p>
+    </div>
+
+    <!-- SECTION 5: TIMELINE -->
+    <section id="timelineSection" class="section">
+      <p class="sec-eyebrow reveal">Perjalanan</p>
+      <h2 class="sec-title reveal"><em>Setiap Momen</em><br />Adalah Hadiah</h2>
+      <div class="sec-divider reveal"></div>
+      <div class="timeline" id="timeline"></div>
+    </section>
+
+    <!-- SECTION 6: DAYS COUNTER -->
+    <section id="counterSection" class="section">
+      <p class="sec-eyebrow reveal">Sudah Bersama</p>
+      <h2 class="sec-title reveal">Hari-Hari <em>Indah</em><br />Bersamamu</h2>
+      <div class="sec-divider reveal"></div>
+      <div class="counter-grid">
+        <div class="counter-card reveal">
+          <span class="counter-num" id="cDays">0</span>
+          <span class="counter-label">Hari</span>
+        </div>
+        <div class="counter-card reveal">
+          <span class="counter-num" id="cHours">0</span>
+          <span class="counter-label">Jam</span>
+        </div>
+        <div class="counter-card reveal">
+          <span class="counter-num" id="cMins">0</span>
+          <span class="counter-label">Menit</span>
+        </div>
+        <div class="counter-card reveal">
+          <span class="counter-num" id="cSecs">0</span>
+          <span class="counter-label">Detik</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 7: 100 REASONS -->
+    <section id="reasonsSection" class="section">
+      <p class="sec-eyebrow reveal">Alasan Aku Mencintaimu</p>
+      <h2 class="sec-title reveal"><em>100 Hal</em><br />Tentangmu</h2>
+      <div class="sec-divider reveal"></div>
+      <div class="reason-card reveal">
+        <p class="reason-num" id="reasonNum">Alasan #1</p>
+        <p class="reason-text" id="reasonText">Klik tombol di bawah...</p>
+      </div>
+      <button class="reason-btn" onclick="showReason()">Klik Aku ❤️</button>
+    </section>
+
+    <!-- SECTION 8: MEMORY BOOK -->
+    <section id="bookSection" class="section">
+      <p class="sec-eyebrow reveal">Kenangan</p>
+      <h2 class="sec-title reveal">Buku <em>Cinta</em> Ku</h2>
+      <div class="sec-divider reveal"></div>
+      <div class="book-wrap" onclick="toggleBook()">
+        <div class="book" id="memBook">
+          <div class="book-cover">
+            <div class="book-heart">📖</div>
+            <h3 class="book-title">Rizal Book</h3>
+            <p class="book-subtitle">Sentuh untuk membuka</p>
+          </div>
+          <div class="book-back">
+            <p class="book-back-content" id="bookContent"></p>
+          </div>
+        </div>
+        <p class="book-hint reveal" id="bookHint">
+          Sentuh untuk membalik halaman ♡
+        </p>
+      </div>
+    </section>
+
+    <!-- SECTION 9: MUSIC PLAYER -->
+    <section id="playerSection" class="section">
+      <p class="sec-eyebrow reveal">Lagu Favoritku</p>
+      <h2 class="sec-title reveal">
+        Musik Yang <em>Selalu</em><br />Mengingatkanku Padamu
+      </h2>
+      <div class="sec-divider reveal"></div>
+      <div class="player-card reveal">
+        <div class="player-art" id="playerArt">🎵</div>
+        <p class="player-song" id="playerSong"></p>
+        <p class="player-artist" id="playerArtist"></p>
+        <div class="player-controls">
+          <button class="player-btn" onclick="toggleMusic()">⏮</button>
+          <button
+            class="player-btn main"
+            id="playerPlayBtn"
+            onclick="toggleMusic()"
+          >
+            ▶
+          </button>
+          <button class="player-btn" onclick="toggleMusic()">⏭</button>
+        </div>
+        <div class="player-vol">
+          <span>🔈</span>
+          <input
+            type="range"
+            class="vol-slider"
+            id="volSlider"
+            min="0"
+            max="100"
+            value="70"
+            oninput="setVolume(this.value)"
+          />
+          <span>🔊</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 10: SECRET -->
+    <section id="secretSection" class="section">
+      <p class="sec-eyebrow reveal">Oiyaaa...</p>
+      <h2 class="sec-title reveal">Ada <em>Rahasia</em><br />Untukmu</h2>
+      <div class="sec-divider reveal"></div>
+      <button class="secret-btn" onclick="openSecret()">
+        Aku Punya Rahasia ❤️
+      </button>
+    </section>
+
+    <!-- SECRET MODAL -->
+    <div id="secretModal">
+      <div class="modal-box">
+        <span class="modal-icon">🔐</span>
+        <h3 class="modal-title">Rahasia Kecilku</h3>
+        <p class="modal-text" id="secretText"></p>
+        <button class="modal-close" onclick="closeSecret()">Tutup ✕</button>
+      </div>
+    </div>
+
+    <!-- SECTION 11: FINAL -->
+    <section id="finalSection" class="section">
+      <div class="hearts-field" id="heartsField"></div>
+      <h2 class="final-title" id="finalTitle">
+        Terima Kasih<br />Sudah Hadir<br /><em>Dalam Hidupku ❤️</em>
+      </h2>
+      <p class="final-sub" id="finalSub">Aku Akan Selalu Memilihmu</p>
+    </section>
+
+    <!-- SECTION 12: GRAND FINALE -->
+    <section id="grandfinalSection" class="section">
+      <canvas id="confettiCanvas"></canvas>
+      <div class="finale-content">
+        <h1 class="finale-main" id="finaleMain">
+          <em>I Love You</em><br />More Than Yesterday ❤️
+        </h1>
+        <p class="finale-sub" id="finaleSub">
+          Dan Akan Lebih Besar Lagi Esok ❤️
+        </p>
+        <p class="finale-from" id="finaleFrom"></p>
+      </div>
+    </section>
+
+    <!-- AUDIO -->
+    <audio id="bgMusic" loop preload="none">
+      <source id="musicSrc" src="lagu.mp3" type="audio/mpeg" />
+    </audio>
+
+    <script>
+      // ==================== CONFIG ====================
+      const CONFIG = {
+        partner: "Cimupkuuu",
+        sender: "Rizal 13 Juni 2026",
+        startDate: new Date("2026-03-14T00:00:00"),
+
+        letter: {
+          date: "13 Juni 2026",
+          opening: "Untuk kamu, cimupp,",
+          body: `Setiap hari bersamamu terasa seperti halaman baru dari kisah paling indah yang pernah hadir dalam hidupku. Mungkin aku tidak selalu pandai menemukan kata-kata yang tepat untuk menjelaskan betapa berharganya kamu, tapi ada satu hal yang selalu aku tahu dengan pasti: kehadiranmu membuat semuanya terasa lebih berarti.
+Saat pertama kali kita mulai chatan, sejujurnya aku tidak pernah berpikir akan melibatkan perasaanku sedalam ini kepada seseorang. Aku tidak pernah menyangka semuanya akan berjalan seperti sekarang. Tapi kamu datang dengan caramu sendiri—begitu baik, begitu tulus. Sedikit demi sedikit, tanpa aku sadari, aku jatuh semakin dalam kepadamu.
+Terima kasih karena sudah hadir dan memberi warna baru dalam hidupku. Warna yang membuat hari-hari biasa terasa lebih istimewa, yang mengajarkanku bahwa kebahagiaan bisa datang dari hal-hal sederhana; dari tawa kecil, perhatian yang tulus, dan seseorang yang memilih untuk tetap tinggal. Sejak mengenalmu, ada banyak hal yang terasa lebih hangat dan lebih indah dari sebelumnya.
+Aku jatuh cinta padamu bukan hanya karena parasmu atau bagaimana penampilanmu. Aku jatuh cinta pada dirimu seutuhnya—pada caramu berbicara, suara dan tawamu yang selalu berhasil menenangkan hatiku, pada caramu memperlakukanku dengan penuh kasih, dan pada bagaimana kamu mencintai dengan begitu tulus. Aku mencintaimu karena kamu adalah dirimu sendiri. Dan bagiku, kamu pantas mendapatkan seluruh kebaikan dan cinta yang ada di dunia ini.
+Setiap kali melihatmu tertawa, aku kembali ingat alasan mengapa hatiku memilihmu. Hal-hal sederhana seperti pesan singkat darimu, perhatian kecil yang sering kamu anggap biasa, atau caramu mendengarkan semua ceritaku, selalu berhasil membuat hariku terasa lebih cerah. Karena kamu, aku tidur dengan senyuman dan bangun dengan senyuman yang sama. Kamu bukan hanya seseorang yang aku sayang, tapi juga tempat yang membuatku merasa tenang dan diterima apa adanya.
+Terima kasih karena selama ini sudah menemani aku, mendengarkan setiap cerita yang kadang berantakan, dan tetap ada di banyak waktu yang tidak selalu mudah. Kehadiranmu adalah salah satu hal terbaik yang pernah Tuhan kirimkan dalam hidupku.
+Aku harap selama ini aku sudah memperlakukanmu dengan baik dan memberimu cinta yang memang pantas kamu dapatkan. Jujur, aku takut kehilanganmu. Aku juga takut menjadi alasan yang membuatmu terluka. Karena itu, jika ada satu hal yang selalu ingin aku lakukan, itu adalah terus belajar mencintaimu dengan cara yang paling lembut dan paling tulus yang aku bisa.
+Semoga nasimu selalu hangat, laukmu selalu enak, es krimmu selalu dingin, dan semoga setiap lampu lalu lintas berubah hijau saat kamu melintas. Semoga kamu selalu dikelilingi oleh orang-orang yang tulus dan memperlakukanmu dengan baik. Di zaman dengan pergaulan yang sering kali membingungkan seperti sekarang, aku sungguh berharap perempuan lucu sepertimu tetap terjaga, tetap menjadi dirimu yang baik hati, dan tidak kehilangan cahaya indah yang kamu miliki.
+Semoga senyummu yang cantik selalu bersinar. Semoga langkahmu dalam meraih cita-cita dipermudah, kariermu berjalan lancar, setiap usaha yang kamu lakukan terus bertumbuh, dan semoga semua doa yang kamu panjatkan menemukan jalannya untuk dikabulkan.
+Jangan terlalu keras pada dirimu sendiri. Jika suatu hari kamu merasa lelah di tengah perjalanan ini, ingatlah bahwa beristirahat bukan berarti menyerah. Berhentilah sejenak jika memang perlu, tapi jangan pernah berhenti bermimpi. Jangan memaksakan diri sampai lupa menjaga dirimu sendiri. Lakukan yang terbaik semampumu, karena itu sudah lebih dari cukup. Aku bangga padamu, selalu.
+Malam ini, aku harap kamu bisa tidur dengan nyenyak. Aku harap kamu selalu ingat bahwa kesehatanmu, ketenangan jiwamu, dan dirimu sendiri jauh lebih berharga daripada pencapaian apa pun. Kamu sudah melakukan yang terbaik hari ini. Kamu sudah cukup. Jadi, istirahatlah tanpa rasa bersalah.
+Aku juga berharap semua impian yang sedang kamu perjuangkan menemukan jalannya untuk terwujud, satu demi satu. Jangan pernah lelah menjadi seseorang dengan hati sebaik itu. Dunia mungkin tidak selalu ramah, tapi aku harap hidup akan memperlakukanmu dengan lebih lembut dan memberimu lebih banyak alasan untuk tersenyum.
+Dan kalau ada satu hal yang ingin selalu kamu ingat, itu adalah ini: kamu sangat dicintai. Sangat dihargai. Dan kamu pantas mendapatkan seluruh cinta, kebahagiaan, serta hal-hal baik yang ada di dunia ini.
+Dengan atau tanpaku nanti, aku tetap ingin melihatmu menjalani hidup dengan bahagia. Bersama ataupun tidak, aku berharap semesta selalu menjagamu, menyayangimu, dan mempertemukanmu dengan segala hal baik yang pantas kamu dapatkan. Karena mencintaimu, bagiku, juga berarti mendoakan kebahagiaanmu dalam bentuk apa pun.
+Aku bersyukur bisa mengenalmu. Terima kasih sudah hadir, menemani langkahku, dan memberi warna-warna baru dalam hidup yang bahkan tidak pernah aku tahu sebelumnya begitu aku butuhkan. Semoga semesta selalu berpihak padamu, dan semoga semua hal baik selalu menemukan jalan pulang kepadamu.`,
+          signature: "Selamanya milikmu ❤️",
+        },
+
+        photos: [
+          { src: "foto1.jpg", caption: "Maii Swiitii" },
+          { src: "foto2.jpg", caption: "Maii Cimupp" },
+          { src: "foto3.jpg", caption: "Maii Cutiee" },
+          { src: "foto4.jpg", caption: "Maii Shinyy" },
+          { src: "foto5.jpg", caption: "Maii Lopp" },
+          { src: "foto6.jpg", caption: "Maii Bunnyy" },
+        ],
+
+        timeline: [
+          {
+            date: "Awal Semua",
+            title: "Pertama Kenal",
+            desc: "Duniaku ku perlahan berubah.",
+            icon: "✨",
+          },
+          {
+            date: "Hari Pertama",
+            title: "Pertama Chat",
+            desc: "Pesan pertama yang mengubah hidupku.",
+            icon: "💬",
+          },
+          {
+            date: "Sore Yang Hangat",
+            title: "Pertama Mendengar Suaramu",
+            desc: "Suaramu... aku langsung jatuh hati.",
+            icon: "📞",
+          },
+          {
+            date: "Momen Ajaib",
+            title: "Kamu Menyukaiku",
+            desc: "Aku tidak menyangka.",
+            icon: "🌹",
+          },
+          {
+            date: "Hari Paling Bahagia",
+            title: "Panggilan Sayang",
+            desc: "aku tidak bisa berhenti tersenyum sepanjang hari.",
+            icon: "💍",
+          },
+          {
+            date: "Sekarang",
+            title: "Hari Ini",
+            desc: "Masih jatuh cinta padamu setiap harinya.",
+            icon: "❤️",
+          },
+        ],
+
+        reasons: [
+          "Kamu baik.",
+          "Kamu murah senyum.",
+          "Kamu cantik.",
+          "Kamu pintar.",
+          "Kamu perhatian.",
+          "Kamu peduli.",
+          "Kamu penyayang.",
+          "Kamu tulus.",
+          "Kamu ramah.",
+          "Kamu hangat.",
+          "Kamu lucu.",
+          "Kamu menggemaskan.",
+          "Kamu manis.",
+          "Kamu unik.",
+          "Kamu spesial.",
+          "Kamu selalu bikin nyaman.",
+          "Kamu selalu bikin tenang.",
+          "Kamu selalu bikin bahagia.",
+          "Kamu punya hati yang lembut.",
+          "Kamu punya senyum yang indah.",
+          "Kamu punya tawa yang menular.",
+          "Kamu punya suara yang lucu.",
+          "Kamu punya energi yang positif.",
+          "Kamu selalu membuat suasana lebih hidup.",
+          "Kamu selalu membuat hari lebih cerah.",
+          "Kamu suka kucing.",
+          "Kamu lucu seperti anak kucing.",
+          "Kamu imut seperti kelinci kecil.",
+          "Kamu manja dengan cara yang menggemaskan.",
+          "Kamu aktif dan ceria.",
+          "Kamu selalu punya cerita menarik.",
+          "Kamu selalu punya hal lucu untuk dibagikan.",
+          "Kamu pintar membuat orang tertawa.",
+          "Kamu punya jokes receh yang lucu.",
+          "Kamu sering membuatku tersenyum.",
+          "Kamu selalu berhasil mencairkan suasana.",
+          "Kamu tidak pernah membosankan.",
+          "Kamu punya kepribadian yang menarik.",
+          "Kamu mudah disukai banyak orang.",
+          "Kamu selalu terlihat manis.",
+          "Kamu selalu terlihat menggemaskan.",
+          "Kamu punya mata yang indah.",
+          "Kamu punya aura yang hangat.",
+          "Kamu punya hati yang baik.",
+          "Kamu selalu berusaha memahami orang lain.",
+          "Kamu selalu mendengarkan dengan baik.",
+          "Kamu selalu hadir saat dibutuhkan.",
+          "Kamu selalu memberi perhatian kecil yang berarti.",
+          "Kamu selalu menghargai orang lain.",
+          "Kamu selalu membuat orang merasa diterima.",
+          "Kamu punya cara bicara yang lucu.",
+          "Kamu punya ekspresi yang lucu.",
+          "Kamu punya tingkah laku yang lucu.",
+          "Kamu punya reaksi yang lucu.",
+          "Kamu punya kebiasaan yang menggemaskan.",
+          "Kamu punya sifat yang menyenangkan.",
+          "Kamu punya selera humor yang unik.",
+          "Kepribadianmu yang unik adalah salah satu alasan aku menyukaimu.",
+          "Cara berpikirmu selalu menarik untuk aku dengarkan.",
+          "Kamu selalu menjadi dirimu sendiri, dan itu yang membuatmu istimewa.",
+          "Kamu membuatku merasa nyaman menjadi diriku sendiri.",
+          "Kamu memberi warna baru dalam hidupku yang sebelumnya terasa biasa saja.",
+          "Kehadiranmu membuat hari-hariku terasa lebih cerah.",
+          "Kamu membuat hidupku terasa lebih hangat dan menyenangkan.",
+          "Kamu selalu berhasil membuat momen sederhana terasa berkesan.",
+          "Aku suka caramu menyukaiku.",
+          "Aku suka caramu menunjukkan perhatian kepadaku.",
+          "Aku suka bagaimana kamu membuatku merasa dihargai.",
+          "Aku suka bagaimana kamu selalu berusaha memahami perasaanku.",
+          "Kamu membuatku merasa dicintai.",
+          "Kamu membuatku merasa berarti.",
+          "Kamu membuatku merasa beruntung karena bisa mengenalmu.",
+          "Kamu membuat suasana sepi terasa ramai.",
+          "Kamu membuat momen sederhana terasa indah.",
+          "Kamu membuat hidup terasa lebih berwarna.",
+          "Kamu seperti sinar matahari di pagi hari.",
+          "Kamu seperti pelangi setelah hujan.",
+          "Kamu seperti lagu favorit yang tidak membosankan.",
+          "Kamu seperti rumah yang nyaman untuk pulang.",
+          "Kamu seperti keberuntungan yang datang tanpa diduga.",
+          "Kamu selalu berhasil menarik perhatian.",
+          "Kamu selalu berhasil membuatku kagum.",
+          "Kamu selalu berhasil membuatku tertawa.",
+          "Kamu selalu berhasil membuatku merasa nyaman.",
+          "Kamu selalu berhasil membuatku merasa dihargai.",
+          "Kamu adalah definisi manis.",
+          "Kamu adalah definisi lucu.",
+          "Kamu adalah definisi menggemaskan.",
+          "Kamu adalah definisi perhatian.",
+          "Kamu adalah definisi kebaikan.",
+          "Kamu adalah definisi ketulusan.",
+          "Kamu adalah definisi kehangatan.",
+          "Kamu adalah definisi kebahagiaan kecil.",
+          "Kamu adalah definisi orang baik.",
+          "Kamu adalah salah satu hal terbaik yang pernah hadir di hidupku.",
+          "Kamu membuat dunia terasa lebih indah.",
+          "Kamu membuat hariku lebih berarti.",
+          "Aku kagum dengan caramu menjalani hidup dengan penuh ketulusan.",
+          "Kamu selalu membuatku ingin menjadi versi terbaik dari diriku.",
+          "Dan dari semua hal yang aku suka, kamu adalah favoritku. 🤍✨",
+        ],
+
+        bookContent: `"Dari semua keindahan yang pernah aku temui, kamu tetap menjadi yang paling berharga.\n\nBersamamu, hal-hal kecil terasa istimewa; obrolan sederhana berubah menjadi kenangan, dan waktu terasa terlalu cepat berlalu.\n\nKamu adalah alasan di balik senyum-senyum kecilku.\n\nTerima kasih telah hadir dan membiarkanku mengenal duniamu.\n\nJika hidup adalah sebuah buku, maka kamu adalah halaman favoritku—bagian yang tak pernah ingin kulewati dan selalu ingin kuulang.\n\nAku sungguh menyayangimu. ❤️"`,
+
+        music: {
+          src: "lagu.mp3",
+          title: "Shape Of My Heart",
+          artist: "Untuk kamu yang selalu di hatiku",
+        },
+
+        secret: `Setiap hari, ada satu hal yang tak pernah berubah: aku selalu merindukanmu.\n\nAku berdoa agar kamu selalu bahagia, diberi kesehatan, dan senantiasa berada dalam lindungan-Nya.\n\nBukan hanya saat bersamaku, tetapi di setiap langkah yang kamu tempuh, semoga kebaikan selalu menyertaimu.\n\nMungkin kamu tidak akan pernah tahu seberapa sering aku menyebut namamu dalam harapan-harapanku.\n\nNamun bagiku, mencintaimu bukan hanya tentang memiliki, melainkan tentang mendoakan yang terbaik untukmu, bahkan dari kejauhan. ✨🤍 `,
+      };
+
+      // ==================== STARS ====================
+      (function () {
+        const canvas = document.getElementById("starCanvas");
+        const ctx = canvas.getContext("2d");
+        let stars = [],
+          W,
+          H,
+          raf;
+
+        function resize() {
+          W = canvas.width = window.innerWidth;
+          H = canvas.height = window.innerHeight;
+          stars = Array.from(
+            { length: Math.min(180, Math.floor((W * H) / 6000)) },
+            () => ({
+              x: Math.random() * W,
+              y: Math.random() * H,
+              r: Math.random() * 1.4 + 0.3,
+              o: Math.random(),
+              speed: Math.random() * 0.4 + 0.1,
+              twinkle: Math.random() * 0.5,
+            }),
+          );
+        }
+
+        let last = 0;
+        function draw(ts) {
+          const dt = (ts - last) / 16.67;
+          last = ts;
+          ctx.clearRect(0, 0, W, H);
+          stars.forEach((s) => {
+            s.twinkle += 0.008 * dt;
+            const op = s.o * (0.5 + 0.5 * Math.sin(s.twinkle));
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255,${200 + Math.floor(55 * op)},${200 + Math.floor(55 * op)},${op})`;
+            ctx.fill();
+            s.y -= s.speed * 0.15 * dt;
+            if (s.y < -2) s.y = H + 2;
+          });
+          raf = requestAnimationFrame(draw);
+        }
+
+        resize();
+        window.addEventListener("resize", resize, { passive: true });
+        requestAnimationFrame(draw);
+      })();
+
+      // ==================== INIT ====================
+      document.getElementById("introName").textContent = CONFIG.partner;
+      document.getElementById("letterDate").textContent = CONFIG.letter.date;
+      document.getElementById("letterOpening").textContent =
+        CONFIG.letter.opening;
+      document.getElementById("letterSignature").textContent =
+        CONFIG.letter.signature;
+      document.getElementById("playerSong").textContent = CONFIG.music.title;
+      document.getElementById("playerArtist").textContent = CONFIG.music.artist;
+      document.getElementById("secretText").textContent = CONFIG.secret;
+      document.getElementById("bookContent").textContent = CONFIG.bookContent;
+      document.getElementById("finaleFrom").textContent =
+        `Dengan seluruh cintaku — ${CONFIG.sender}`;
+
+      // Intro animate
+      gsap.registerPlugin(ScrollTrigger);
+      setTimeout(() => {
+        gsap.to("#introSub", {
+          opacity: 1,
+          y: 0,
+          duration: 1.2,
+          ease: "power3.out",
+        });
+        gsap.to("#introName", {
+          opacity: 1,
+          y: 0,
+          duration: 1.4,
+          delay: 0.3,
+          ease: "power3.out",
+        });
+        gsap.to("#introTagline", {
+          opacity: 1,
+          y: 0,
+          duration: 1.2,
+          delay: 0.7,
+          ease: "power3.out",
+        });
+        gsap.to("#introBtn", {
+          opacity: 1,
+          y: 0,
+          duration: 1.2,
+          delay: 1,
+          ease: "power3.out",
+        });
+        gsap.to("#musicBar", { opacity: 1, duration: 1, delay: 1.5 });
+        gsap.from("#introName", { y: 30 });
+        gsap.from("#introSub", { y: 20 });
+        gsap.from("#introTagline", { y: 20 });
+        gsap.from("#introBtn", { y: 20 });
+      }, 200);
+
+      // ==================== ENVELOPE ====================
+      function startJourney() {
+        const env = document.getElementById("envelopeSection");
+        env.style.display = "flex";
+        document.body.style.overflow = "hidden";
+
+        gsap.from(env, { opacity: 0, duration: 0.6, ease: "power2.out" });
+
+        setTimeout(() => {
+          document.getElementById("envTop").classList.add("open");
+          document.getElementById("envMsg").style.opacity = "1";
+        }, 800);
+
+        setTimeout(() => {
+          document.getElementById("letterPreview").classList.add("show");
+        }, 1200);
+
+        setTimeout(() => {
+          gsap.to(env, {
+            opacity: 0,
+            duration: 0.8,
+            ease: "power2.in",
+            onComplete: () => {
+              env.style.display = "none";
+              document.body.style.overflow = "";
+              document.getElementById("scrollHint").style.opacity = "1";
+              startLetterTyping();
+            },
+          });
+        }, 2800);
+      }
+
+      // ==================== LETTER TYPING ====================
+      function startLetterTyping() {
+        const el = document.getElementById("typedText");
+        const text = CONFIG.letter.body;
+        let i = 0;
+        const speed = 18;
+
+        function type() {
+          if (i < text.length) {
+            el.textContent = text.slice(0, ++i);
+            setTimeout(type, speed);
+          } else {
+            el.style.setProperty("--cursor", "none");
+            el.style.caretColor = "transparent";
+            el.innerHTML = el.innerHTML; // stop cursor
+          }
+        }
+
+        // Only type when in view
+        const obs = new IntersectionObserver(
+          (entries) => {
+            if (entries[0].isIntersecting && i === 0) {
+              type();
+              obs.disconnect();
+            }
+          },
+          { threshold: 0.3 },
+        );
+        obs.observe(document.getElementById("letterSection"));
+      }
+
+      // ==================== PHOTOS ====================
+      const grid = document.getElementById("photosGrid");
+      const rots = [-2, 1.5, -1, 2.5, -1.8, 1.2, -2.2, 1.8];
+      CONFIG.photos.forEach((p, idx) => {
+        const div = document.createElement("div");
+        div.className = "polaroid";
+        div.style.setProperty("--rot", (rots[idx % rots.length] || 0) + "deg");
+
+        div.innerHTML = `
+  <div class="polaroid-img">
+    <img src="${p.src}" alt="${p.caption}">
+  </div>
+  <p class="polaroid-cap">${p.caption}</p>
+`;
+
+        div.onclick = () => openLightbox(p.src, p.caption);
+        grid.appendChild(div);
+
+        const obs = new IntersectionObserver(
+          (entries) => {
+            if (entries[0].isIntersecting) {
+              gsap.to(div, {
+                opacity: 1,
+                y: 0,
+                duration: 0.7,
+                delay: idx * 0.1,
+                ease: "power3.out",
+              });
+              obs.disconnect();
+            }
+          },
+          { threshold: 0.1 },
+        );
+
+        gsap.set(div, { y: 40 });
+        obs.observe(div);
+      });
+
+      function openLightbox(src, cap) {
+        const lb = document.getElementById("lightbox");
+        document.getElementById("lbContent").innerHTML =
+          `<img src="${src}" alt="${cap}">`;
+        document.getElementById("lbCap").textContent = cap;
+        lb.classList.add("open");
+      }
+      function closeLightbox() {
+        document.getElementById("lightbox").classList.remove("open");
+      }
+
+      // ==================== TIMELINE ====================
+      const tlContainer = document.getElementById("timeline");
+      CONFIG.timeline.forEach((t, i) => {
+        const item = document.createElement("div");
+        item.className = "tl-item";
+        item.innerHTML = `
+    <div class="tl-dot">${t.icon}</div>
+    <div class="tl-content">
+      <p class="tl-date">${t.date}</p>
+      <h3 class="tl-title">${t.title}</h3>
+      <p class="tl-desc">${t.desc}</p>
+    </div>
+  `;
+        tlContainer.appendChild(item);
+
+        gsap.to(item, {
+          opacity: 1,
+          x: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: { trigger: item, start: "top 85%", once: true },
+        });
+      });
+
+      // ==================== DAYS COUNTER ====================
+      function updateCounter() {
+        const now = new Date();
+        const diff = now - CONFIG.startDate;
+        const d = Math.floor(diff / 86400000);
+        const h = Math.floor((diff % 86400000) / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+        document.getElementById("cDays").textContent = d.toLocaleString();
+        document.getElementById("cHours").textContent = String(h).padStart(
+          2,
+          "0",
+        );
+        document.getElementById("cMins").textContent = String(m).padStart(
+          2,
+          "0",
+        );
+        document.getElementById("cSecs").textContent = String(s).padStart(
+          2,
+          "0",
+        );
+      }
+      updateCounter();
+      setInterval(updateCounter, 1000);
+
+      // ==================== REASONS ====================
+      let lastReason = -1,
+        shownReasons = [];
+      function showReason() {
+        const reasons = CONFIG.reasons;
+        if (shownReasons.length >= reasons.length) shownReasons = [];
+        let idx;
+        do {
+          idx = Math.floor(Math.random() * reasons.length);
+        } while (idx === lastReason || shownReasons.includes(idx));
+        lastReason = idx;
+        shownReasons.push(idx);
+
+        const el = document.getElementById("reasonText");
+        const num = document.getElementById("reasonNum");
+        gsap.to(el, {
+          opacity: 0,
+          y: -10,
+          duration: 0.25,
+          onComplete: () => {
+            el.textContent = reasons[idx];
+            num.textContent = `Alasan #${idx + 1}`;
+            gsap.to(el, {
+              opacity: 1,
+              y: 0,
+              duration: 0.4,
+              ease: "power3.out",
+            });
+          },
+        });
+      }
+      showReason();
+
+      // ==================== BOOK ====================
+      function toggleBook() {
+        document.getElementById("memBook").classList.toggle("open");
+        document.getElementById("bookHint").textContent = document
+          .getElementById("memBook")
+          .classList.contains("open")
+          ? "Sentuh untuk menutup ♡"
+          : "Sentuh untuk membalik halaman ♡";
+      }
+
+      // ==================== MUSIC ====================
+      const audio = document.getElementById("bgMusic");
+      let musicPlaying = false;
+
+      if (CONFIG.music.src) {
+        document.getElementById("musicSrc").src = CONFIG.music.src;
+        audio.load();
+      }
+
+      audio.volume = 0.7;
+
+      function toggleMusic() {
+        if (!CONFIG.music.src) return;
+        if (musicPlaying) {
+          audio.pause();
+          musicPlaying = false;
+          document.getElementById("musicBar").classList.remove("playing");
+          document
+            .getElementById("musicBar")
+            .querySelector(".lbl").textContent = "Putar Musik";
+          document.getElementById("playerPlayBtn").textContent = "▶";
+          document.getElementById("playerArt").classList.remove("spinning");
+        } else {
+          audio
+            .play()
+            .then(() => {
+              musicPlaying = true;
+              document.getElementById("musicBar").classList.add("playing");
+              document
+                .getElementById("musicBar")
+                .querySelector(".lbl").textContent = "Sedang Memutar";
+              document.getElementById("playerPlayBtn").textContent = "⏸";
+              document.getElementById("playerArt").classList.add("spinning");
+            })
+            .catch(() => {});
+        }
+      }
+
+      function setVolume(v) {
+        audio.volume = v / 100;
+        const slider = document.getElementById("volSlider");
+        slider.style.background = `linear-gradient(to right, #FF4D8D ${v}%, rgba(255,255,255,0.15) ${v}%)`;
+      }
+
+      // ==================== SECRET ====================
+      function openSecret() {
+        document.getElementById("secretModal").classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+      function closeSecret() {
+        document.getElementById("secretModal").classList.remove("open");
+        document.body.style.overflow = "";
+      }
+
+      // ==================== HEARTS FINAL ====================
+      (function () {
+        const field = document.getElementById("heartsField");
+        const emojis = ["❤️", "💕", "💗", "💝", "💓", "💖", "🌸", "✨"];
+        for (let i = 0; i < 18; i++) {
+          const h = document.createElement("span");
+          h.className = "float-heart";
+          h.textContent = emojis[i % emojis.length];
+          h.style.cssText = `left:${Math.random() * 100}%;--dur:${5 + Math.random() * 6}s;--delay:${Math.random() * 6}s;--rot:${-20 + Math.random() * 40}deg;font-size:${16 + Math.random() * 20}px;`;
+          field.appendChild(h);
+        }
+
+        gsap.to("#finalTitle", {
+          opacity: 1,
+          y: 0,
+          duration: 1.2,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: "#finalSection",
+            start: "top 60%",
+            once: true,
+          },
+        });
+        gsap.from("#finalTitle", { y: 50 });
+        gsap.to("#finalSub", {
+          opacity: 1,
+          y: 0,
+          duration: 1.2,
+          delay: 0.4,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: "#finalSection",
+            start: "top 60%",
+            once: true,
+          },
+        });
+        gsap.from("#finalSub", { y: 30 });
+      })();
+
+      // ==================== CONFETTI ====================
+      (function () {
+        const canvas = document.getElementById("confettiCanvas");
+        const ctx = canvas.getContext("2d");
+        let particles = [],
+          active = false,
+          raf;
+
+        function resize() {
+          canvas.width = canvas.offsetWidth;
+          canvas.height = canvas.offsetHeight;
+        }
+
+        function launchConfetti() {
+          resize();
+          active = true;
+          for (let i = 0; i < 120; i++) {
+            particles.push({
+              x: Math.random() * canvas.width,
+              y: -10 - Math.random() * 100,
+              r: 4 + Math.random() * 6,
+              color: [
+                "#FF4D8D",
+                "#FF77B7",
+                "#FFD6E7",
+                "#fff",
+                "#ffb3d1",
+                "#ff0066",
+                "#ffe0f0",
+              ][Math.floor(Math.random() * 7)],
+              vx: -2 + Math.random() * 4,
+              vy: 2 + Math.random() * 4,
+              va: -0.05 + Math.random() * 0.1,
+              angle: Math.random() * Math.PI * 2,
+              shape: Math.random() > 0.5 ? "circle" : "heart",
+            });
+          }
+          draw();
+        }
+
+        function drawHeart(ctx, x, y, size) {
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.scale(size / 10, size / 10);
+          ctx.beginPath();
+          ctx.moveTo(0, -2);
+          ctx.bezierCurveTo(5, -8, 10, -3, 0, 5);
+          ctx.bezierCurveTo(-10, -3, -5, -8, 0, -2);
+          ctx.fill();
+          ctx.restore();
+        }
+
+        function draw() {
+          if (!active) return;
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          particles.forEach((p, i) => {
+            p.x += p.vx;
+            p.y += p.vy;
+            p.angle += p.va;
+            p.vy += 0.05;
+            ctx.fillStyle = p.color;
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.angle);
+            if (p.shape === "heart") {
+              drawHeart(ctx, 0, 0, p.r * 1.5);
+            } else {
+              ctx.beginPath();
+              ctx.arc(0, 0, p.r, 0, Math.PI * 2);
+              ctx.fill();
+            }
+            ctx.restore();
+          });
+          particles = particles.filter((p) => p.y < canvas.height + 20);
+          if (particles.length > 0) raf = requestAnimationFrame(draw);
+          else {
+            active = false;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+          }
+        }
+
+        const obs = new IntersectionObserver(
+          (entries) => {
+            if (entries[0].isIntersecting) {
+              gsap.to("#finaleMain", {
+                opacity: 1,
+                y: 0,
+                duration: 1.4,
+                ease: "power3.out",
+              });
+              gsap.from("#finaleMain", { y: 50 });
+              gsap.to("#finaleSub", {
+                opacity: 1,
+                y: 0,
+                duration: 1.2,
+                delay: 0.5,
+                ease: "power3.out",
+              });
+              gsap.from("#finaleSub", { y: 30 });
+              gsap.to("#finaleFrom", { opacity: 1, duration: 1, delay: 1 });
+              setTimeout(launchConfetti, 800);
+              setTimeout(launchConfetti, 2500);
+              obs.disconnect();
+            }
+          },
+          { threshold: 0.3 },
+        );
+        obs.observe(document.getElementById("grandfinalSection"));
+        window.addEventListener("resize", resize, { passive: true });
+      })();
+
+      // ==================== REVEAL ====================
+      const revealEls = document.querySelectorAll(".reveal");
+      const revObs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("visible");
+              revObs.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.15, rootMargin: "0px 0px -40px 0px" },
+      );
+      revealEls.forEach((el) => revObs.observe(el));
+
+      // Scroll hint hide
+      window.addEventListener(
+        "scroll",
+        () => {
+          if (window.scrollY > 100)
+            document.getElementById("scrollHint").style.opacity = "0";
+        },
+        { passive: true },
+      );
+    </script>
+  </body>
+</html>
